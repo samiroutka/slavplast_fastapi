@@ -5,3 +5,4 @@ class Config(BaseModel):
   width: float | None = None
   cell: str | None = None
   color: str | None = None
+  thickness: str | None = None

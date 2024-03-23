@@ -1,33 +1,40 @@
 
 from fastapi import APIRouter, Depends
+from typing import Union
 import database
 from . import models, schemas
 
 router = APIRouter(tags=['nets'])
 
-@router.get('/nets')
-def get_nets(db = Depends(database.get_session)):
-  return db.query(models.Net).all()
+net_models = {
+  'plastic': models.NetPlastic,
+  'knotless': models.NetKnotless
+}
 
-@router.get('/net/{id}')
-def get_nets(id: int, db = Depends(database.get_session)):
-  return db.query(models.Net).filter(models.Net.id == id).first()
+@router.get('/nets/{netType}')
+def get_nets(netType: str, db = Depends(database.get_session)):
+  return db.query(net_models[netType]).all()
 
-@router.post('/net', response_model=bool)
-def add_net(body: schemas.Net, db = Depends(database.get_session)):
-  new_net = models.Net(**dict(body))
+@router.get('/net/{netType}/{id}')
+def get_nets(id: int,netType: str, db = Depends(database.get_session)):
+  return db.query(net_models[netType]).filter(net_models[netType].id == id).first()
+
+@router.post('/net/{netType}', response_model=bool)
+def add_net(body: Union[schemas.NetPlastic, schemas.NetKnotless], netType: str, db = Depends(database.get_session)):
+  new_net = net_models[netType](**dict(body))
+  print('new_net', new_net)
   db.add(new_net)
   db.commit()
   return True
 
-@router.put('/net/{id}', response_model=bool)
-def get_nets(id: int, body: schemas.Net, db = Depends(database.get_session)):
-  db.query(models.Net).filter(models.Net.id == id).update(dict(body))
+@router.put('/net/{netType}/{id}', response_model=bool)
+def get_nets(id: int, body: Union[schemas.NetPlastic, schemas.NetKnotless], netType: str, db = Depends(database.get_session)):
+  db.query(net_models[netType]).filter(net_models[netType].id == id).update(dict(body))
   db.commit()
   return True
 
-@router.delete('/net/{id}', response_model=bool)
-def get_nets(id: int, db = Depends(database.get_session)):
-  db.query(models.Net).filter(models.Net.id == id).delete()
+@router.delete('/net/{netType}/{id}', response_model=bool)
+def get_nets(id: int,netType: str, db = Depends(database.get_session)):
+  db.query(net_models[netType]).filter(net_models[netType].id == id).delete()
   db.commit()
   return True

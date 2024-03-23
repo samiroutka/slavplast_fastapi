@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 import database
 from fastapi.middleware.cors import CORSMiddleware
-import config.config_view as config
+import configs.configs_view as config
 import nets.nets_view as nets
 
 database.Base.metadata.create_all(bind = database.engine)
