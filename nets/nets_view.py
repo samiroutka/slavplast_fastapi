@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse
 from typing import Union, Dict
 import database
 from . import models, schemas
+import configs.models
 import shutil, os
 
 router = APIRouter(tags=['nets'])
@@ -43,3 +44,20 @@ def get_nets(id: int,netType: str, db = Depends(database.get_session)):
   db.commit()
   return True
 
+# -------------------------------
+
+cells_models = {
+  'plastic': configs.models.CellPlastic,
+  'knotless': configs.models.CellKnotless,
+}
+
+@router.get('/cells/{netType}')
+def get_cells(netType: str, db = Depends(database.get_session)):
+  cells = db.query(cells_models[netType]).all()
+  cells = list(filter(lambda cell: db.query(net_models[netType]).filter(net_models[netType].cell == cell.id).first(), cells))
+  return cells
+
+@router.get('/cells/{netType}/{cellId}')
+def get_nets_byCells(netType: str, cellId: int, db = Depends(database.get_session)):
+  return db.query(net_models[netType]).filter(net_models[netType].cell == cellId).all()
+  
