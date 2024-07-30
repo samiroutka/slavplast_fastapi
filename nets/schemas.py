@@ -8,6 +8,8 @@ class NetPlastic(BaseModel):
   width: int 
   cell: int 
   color: int
+  price: int
+  quantity: int
   
 class NetKnotless(BaseModel):
   # это все id конфигов
@@ -16,3 +18,5 @@ class NetKnotless(BaseModel):
   width: int
   cell: int
   thickness: int
+  price: int
+  quantity: int

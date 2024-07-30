@@ -15,6 +15,7 @@ class Cell(database.Base):
   __abstract__ = True
   id = Column(Integer, primary_key=True)
   cell = Column(String)
+  description = Column(String)
 
 class Thickness(database.Base):
   __abstract__ = True

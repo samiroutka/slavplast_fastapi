@@ -61,3 +61,8 @@ def get_cells(netType: str, db = Depends(database.get_session)):
 def get_nets_byCells(netType: str, cellId: int, db = Depends(database.get_session)):
   return db.query(net_models[netType]).filter(net_models[netType].cell == cellId).all()
   
+@router.put('/cells/{netType}/{cellId}')
+def update_cell(body: dict, netType: str, cellId: int, db = Depends(database.get_session)):
+  db.query(cells_models[netType]).filter(cells_models[netType].id == cellId).update(dict(body))
+  db.commit()
+  return True

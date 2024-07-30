@@ -6,6 +6,8 @@ class NetPlastic(database.Base):
   type = 'Plastic'
   __tablename__ = f'Nets{type}'
   id = Column(Integer, primary_key=True)
+  price = Column(Integer, default=0)
+  quantity = Column(Integer, default=0)
   images = Column(ARRAY(String))
   length = Column(Integer, ForeignKey(f'Lengths{type}.id', ondelete='CASCADE'))
   width = Column(Integer, ForeignKey(f'Widths{type}.id', ondelete='CASCADE'))
@@ -16,6 +18,8 @@ class NetKnotless(database.Base):
   type = 'Knotless'
   __tablename__ = f'Nets{type}'
   id = Column(Integer, primary_key=True)
+  price = Column(Integer, default=0)
+  quantity = Column(Integer, default=0)
   images = Column(ARRAY(String))
   length = Column(Integer, ForeignKey(f'Lengths{type}.id', ondelete='CASCADE'))
   width = Column(Integer, ForeignKey(f'Widths{type}.id', ondelete='CASCADE'))

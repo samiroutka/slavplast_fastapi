@@ -24,7 +24,7 @@ def get_config(netType: str, db = Depends(database.get_session)):
   config = {}
   config_models = config_models_plastic if netType == 'plastic' else config_models_knotless
   for item in config_models:
-    item_elements = db.query(config_models[item]).all()
+    item_elements = db.query(config_models[item]).order_by('id').all()
     if item_elements:
       config[item] = item_elements
   return config
@@ -46,6 +46,7 @@ def delete_config(netType: str, type: str, id: int, force: bool | None = None, d
   config_models = config_models_plastic if netType == 'plastic' else config_models_knotless
   net_model = NetPlastic if netType == 'plastic' else NetKnotless
   def nets_relate_with_config():
+    print(netType)
     delete_element = db.query(config_models[type]).filter(config_models[type].id == id).first()
     existing_nets = db.query(net_model).filter(getattr(net_model, type) == delete_element.id).all()
     return existing_nets
