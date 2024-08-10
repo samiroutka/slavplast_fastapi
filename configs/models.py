@@ -6,26 +6,41 @@ class Length(database.Base):
   id = Column(Integer, primary_key=True)
   length = Column(Float)
 
+  def to_dict(self):
+    return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
 class Width(database.Base):
   __abstract__ = True
   id = Column(Integer, primary_key=True)
   width = Column(Float)
+
+  def to_dict(self):
+    return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 class Cell(database.Base):
   __abstract__ = True
   id = Column(Integer, primary_key=True)
   cell = Column(String)
   description = Column(String)
+  
+  def to_dict(self):
+    return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 class Thickness(database.Base):
   __abstract__ = True
   id = Column(Integer, primary_key=True)
   thickness = Column(String)
 
+  def to_dict(self):
+    return {column.name: getattr(self, column.name) for column in self.__table__.columns}
+
 class Color(database.Base):
   __abstract__ = True
   id = Column(Integer, primary_key=True)
   color = Column(String)
+
+  def to_dict(self):
+    return {column.name: getattr(self, column.name) for column in self.__table__.columns}
 
 # --------------------------
 type1 = 'Plastic'
